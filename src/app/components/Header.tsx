@@ -10,23 +10,11 @@ export default function Header() {
       </div>
       
       <h1 className="text-4xl font-bold text-gray-900 tracking-tight">
-        Todo<span className="text-blue-600">SecOps</span>
+        Todo<span className="text-blue-600">App</span>
       </h1>
       <p className="mt-3 text-lg text-gray-600">
         Minimal, sécurisé, efficace
       </p>
-      
-      <div className="mt-6 flex flex-wrap justify-center gap-2">
-        <span className="px-3 py-1 bg-white border border-blue-200 text-blue-700 text-sm font-medium rounded-full">
-          Next.js 14
-        </span>
-        <span className="px-3 py-1 bg-orange-50 text-orange-700 text-sm font-medium rounded-full">
-          TypeScript
-        </span>
-        <span className="px-3 py-1 bg-blue-50 text-blue-700 text-sm font-medium rounded-full">
-          LocalStorage
-        </span>
-      </div>
     </header>
   )
 }
