@@ -7,23 +7,50 @@ on:
     branches: [dev, main]
 
 jobs:
-  build-and-test:
+  security-pipeline:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 22.16.0
 
-      - name: Install dependencies
-        run: npm install
+      - run: npm install
+      - run: npm run build
+      - run: npm test
 
-      - name: Run build
-        run: npm run build
+      # SAST SonarQube
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v5.0.0
+        with:
+          scannerVersion: 7.0.2.4839
+          scannerBinariesUrl: https://binaries.sonarsource.com/Distribution/sonar-scanner-cli
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: https://sonarcloud.io
 
-      - name: Run tests
-        run: npm test
+      # Secret scanning
+      - name: Secret scanning
+        uses: gitleaks/gitleaks-action@v2
+
+      # Build Docker image
+      - name: Build Docker image
+        run: docker build -t image-nextjs-app .
+
+      # Docker Scout scan
+      - name: Scan Docker image with Docker Scout
+        run: docker scout cves image-nextjs-app --exit-code 1
+
+      # Run container
+      - name: Run container
+        run: |
+          docker run -d -p 3000:3000 --name app image-nextjs-app
+          sleep 20
+
+      # DAST OWASP ZAP
+      - name: OWASP ZAP scan
+        uses: zaproxy/action-baseline@v0.10.0
+        with:
+          target: http://localhost:3000

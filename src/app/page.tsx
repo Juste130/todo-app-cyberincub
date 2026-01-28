@@ -1,44 +1,44 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import Header from './components/Header'
-import AddTodoForm from './components/AddTodoForm'
-import TodoList from '@/app/components/TodoList'
+import { useState, useEffect } from "react";
+import Header from "./components/Header";
+import AddTodoForm from "./components/AddTodoForm";
+import TodoList from "@/app/components/TodoList";
 
 export type Todo = {
-  id: string
-  text: string
-  completed: boolean
-  createdAt: Date
-}
+  id: string;
+  text: string;
+  completed: boolean;
+  createdAt: Date;
+};
 
 export default function Home() {
-  const [todos, setTodos] = useState<Todo[]>([])
+  const [todos, setTodos] = useState<Todo[]>([]);
 
-  // Charger depuis localStorage
+  // Charger depuis localStoragee
   useEffect(() => {
-    const saved = localStorage.getItem('todos')
+    const saved = localStorage.getItem("todos");
     if (saved) {
       try {
-        const parsed = JSON.parse(saved)
+        const parsed = JSON.parse(saved);
         // Convertir les dates string en objets Date
         const todosWithDates = parsed.map((todo: any) => ({
           ...todo,
-          createdAt: new Date(todo.createdAt)
-        }))
-        setTodos(todosWithDates)
+          createdAt: new Date(todo.createdAt),
+        }));
+        setTodos(todosWithDates);
       } catch (error) {
-        console.error('Erreur de chargement:', error)
+        console.error("Erreur de chargement:", error);
       }
     }
-  }, [])
+  }, []);
 
   // Sauvegarder dans localStorage
   useEffect(() => {
     if (todos.length > 0) {
-      localStorage.setItem('todos', JSON.stringify(todos))
+      localStorage.setItem("todos", JSON.stringify(todos));
     }
-  }, [todos])
+  }, [todos]);
 
   // Ajouter un todo
   const addTodo = (text: string) => {
@@ -46,37 +46,39 @@ export default function Home() {
       id: crypto.randomUUID(),
       text,
       completed: false,
-      createdAt: new Date()
-    }
-    setTodos([newTodo, ...todos])
-  }
+      createdAt: new Date(),
+    };
+    setTodos([newTodo, ...todos]);
+  };
 
   // Basculer l'état complété
   const toggleTodo = (id: string) => {
-    setTodos(todos.map(todo =>
-      todo.id === id ? { ...todo, completed: !todo.completed } : todo
-    ))
-  }
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo,
+      ),
+    );
+  };
 
   // Supprimer un todo
   const deleteTodo = (id: string) => {
-    setTodos(todos.filter(todo => todo.id !== id))
-  }
+    setTodos(todos.filter((todo) => todo.id !== id));
+  };
 
   // Nettoyer les complétés
   const clearCompleted = () => {
-    setTodos(todos.filter(todo => !todo.completed))
-  }
+    setTodos(todos.filter((todo) => !todo.completed));
+  };
 
   // Stats
-  const totalTodos = todos.length
-  const completedTodos = todos.filter(t => t.completed).length
-  const pendingTodos = totalTodos - completedTodos
+  const totalTodos = todos.length;
+  const completedTodos = todos.filter((t) => t.completed).length;
+  const pendingTodos = totalTodos - completedTodos;
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
       <Header />
-      
+
       <main className="mt-12 space-y-8">
         {/* Section d'ajout */}
         <div className="bg-white rounded-xl border border-gray-200 p-6">
@@ -97,7 +99,7 @@ export default function Home() {
                 {pendingTodos} en attente • {completedTodos} terminées
               </p>
             </div>
-            
+
             {completedTodos > 0 && (
               <button
                 onClick={clearCompleted}
@@ -117,8 +119,18 @@ export default function Home() {
           ) : (
             <div className="px-6 py-16 text-center">
               <div className="text-gray-300 mb-4">
-                <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                <svg
+                  className="w-16 h-16 mx-auto"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                  />
                 </svg>
               </div>
               <p className="text-gray-500 text-lg">
@@ -136,7 +148,11 @@ export default function Home() {
           <div className="flex items-start">
             <div className="flex-shrink-0 text-blue-600">
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                <path
+                  fillRule="evenodd"
+                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                  clipRule="evenodd"
+                />
               </svg>
             </div>
             <div className="ml-3">
@@ -144,12 +160,13 @@ export default function Home() {
                 Projet DevSecOps
               </h3>
               <p className="text-sm text-blue-700 mt-1">
-                Cette application est versionnée avec Git, dispose d'un pipeline CI/CD automatisé et de contrôles de sécurité intégrés.
+                Cette application est versionnée avec Git, dispose d'un pipeline
+                CI/CD automatisé et de contrôles de sécurité intégrés.
               </p>
             </div>
           </div>
         </div>
       </main>
     </div>
-  )
+  );
 }

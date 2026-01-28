@@ -1,31 +1,27 @@
-'use client'
+"use client";
 
-import TodoItem from '@/app/components/TodoItem'
-import { Todo } from '@/app/page'
+import TodoItem from "@/app/components/TodoItem";
+import { Todo } from "@/app/page";
 
 interface TodoListProps {
-  todos: Todo[]
-  onToggle: (id: string) => void
-  onDelete: (id: string) => void
+  todos: Todo[];
+  onToggle: (id: string) => void;
+  onDelete: (id: string) => void;
 }
 
 export default function TodoList({ todos, onToggle, onDelete }: TodoListProps) {
   // Séparer les todos complétés et non-complétés
-  const pendingTodos = todos.filter(todo => !todo.completed)
-  const completedTodos = todos.filter(todo => todo.completed)
+  const pendingTodos = todos.filter((todo) => !todo.completed);
+  const completedTodos = todos.filter((todo) => todo.completed);
 
   return (
     <div className="divide-y divide-gray-100">
-      {/* Todos en attente */}
+      {/* Todos en attente  */}
       {pendingTodos.length > 0 && (
         <div className="p-2">
-          {pendingTodos.map(todo => (
+          {pendingTodos.map((todo) => (
             <div key={todo.id} className="animate-fadeIn">
-              <TodoItem
-                todo={todo}
-                onToggle={onToggle}
-                onDelete={onDelete}
-              />
+              <TodoItem todo={todo} onToggle={onToggle} onDelete={onDelete} />
             </div>
           ))}
         </div>
@@ -40,7 +36,7 @@ export default function TodoList({ todos, onToggle, onDelete }: TodoListProps) {
             </h3>
           </div>
           <div className="p-2">
-            {completedTodos.map(todo => (
+            {completedTodos.map((todo) => (
               <TodoItem
                 key={todo.id}
                 todo={todo}
@@ -52,5 +48,5 @@ export default function TodoList({ todos, onToggle, onDelete }: TodoListProps) {
         </div>
       )}
     </div>
-  )
+  );
 }
