@@ -23,11 +23,13 @@ jobs:
 
       # SAST SonarQube
       - name: SonarQube Scan
-        uses: sonarsource/sonarcloud-github-action@master
+        uses: SonarSource/sonarqube-scan-action@v5.0.0
         with:
-          projectKey: nextjs-app
-          organization: harley755
-          token: ${{ secrets.SONAR_TOKEN }}
+          scannerVersion: 7.0.2.4839
+          scannerBinariesUrl: https://binaries.sonarsource.com/Distribution/sonar-scanner-cli
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: https://sonarcloud.io
 
       # Secret scanning
       - name: Secret scanning
